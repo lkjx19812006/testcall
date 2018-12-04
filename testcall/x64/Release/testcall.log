@@ -1,0 +1,17 @@
+﻿  stdafx.cpp
+  testcall.cpp
+  testcallDlg.cpp
+c:\users\administrator\source\repos\testcall\testcall\testcalldlg.cpp(167): error C4235: 使用了非标准扩展: 不支持在此结构上使用“__asm”关键字
+c:\users\administrator\source\repos\testcall\testcall\testcalldlg.cpp(168): error C2065: “mov”: 未声明的标识符
+c:\users\administrator\source\repos\testcall\testcall\testcalldlg.cpp(168): error C2146: 语法错误: 缺少“;”(在标识符“eax”的前面)
+c:\users\administrator\source\repos\testcall\testcall\testcalldlg.cpp(168): error C2065: “eax”: 未声明的标识符
+c:\users\administrator\source\repos\testcall\testcall\testcalldlg.cpp(169): error C2065: “call”: 未声明的标识符
+c:\users\administrator\source\repos\testcall\testcall\testcalldlg.cpp(169): error C2146: 语法错误: 缺少“;”(在标识符“eax”的前面)
+c:\users\administrator\source\repos\testcall\testcall\testcalldlg.cpp(169): error C2065: “eax”: 未声明的标识符
+c:\users\administrator\source\repos\testcall\testcall\testcalldlg.cpp(210): error C2664: “BOOL WriteProcessMemory(HANDLE,LPVOID,LPCVOID,SIZE_T,SIZE_T *)”: 无法将参数 5 从“DWORD *”转换为“SIZE_T *”
+  c:\users\administrator\source\repos\testcall\testcall\testcalldlg.cpp(210): note: 与指向的类型无关；强制转换要求 reinterpret_cast、C 样式强制转换或函数样式强制转换
+c:\users\administrator\source\repos\testcall\testcall\testcalldlg.cpp(284): error C4235: 使用了非标准扩展: 不支持在此结构上使用“__asm”关键字
+c:\users\administrator\source\repos\testcall\testcall\testcalldlg.cpp(286): error C2065: “push”: 未声明的标识符
+c:\users\administrator\source\repos\testcall\testcall\testcalldlg.cpp(286): error C2143: 语法错误: 缺少“;”(在“常数”的前面)
+c:\users\administrator\source\repos\testcall\testcall\testcalldlg.cpp(287): error C2065: “call”: 未声明的标识符
+c:\users\administrator\source\repos\testcall\testcall\testcalldlg.cpp(287): error C2146: 语法错误: 缺少“;”(在标识符“dwAddr”的前面)
