@@ -1,5 +1,11 @@
 /.vscode
 /.vs
+Debug/
+Release/
+x64/
+/*/Debug/
+/*/Release/
+/*/x64/
 .DS_Store
 node_modules/
 dist/

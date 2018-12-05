@@ -92,6 +92,26 @@ float base::readmemoryFloat(DWORD dwAddr)
 	return result;
 }
 
+// 读内存字符型
+char* base::readmemoryChar(DWORD dwAddr)
+{
+	char result[256];//最长256
+	ReadProcessMemory(m_handle, (LPCVOID)m_paramAddr, (LPVOID)result, 256, NULL);
+	return result;
+}
+
+//写内存整数型
+void base::writememoryInt(DWORD dwAddr, int num)
+{
+	WriteProcessMemory(m_handle, (LPVOID)dwAddr, &num, 4, NULL);
+}
+
+//写内存浮点型
+void base::writememoryFloat(DWORD dwAddr, float flnum)
+{
+	WriteProcessMemory(m_handle, (LPVOID)dwAddr, &flnum, 4, NULL);
+}
+
 // 注入函数 不带参数
 void base::InjectCall(LPVOID mFunc)
 {
@@ -106,7 +126,7 @@ void base::InjectCall(LPVOID mFunc)
 }
 
 // 注入函数 带参数
-void base::InjectCall(LPVOID mFunc, LPVOID Param, DWORD ParamSize, DWORD ParamNum)
+void base::InjectCall(LPVOID mFunc, LPVOID Param, DWORD ParamSize)
 {
 	//1.将函数写入到内存地址
 	WriteProcessMemory(m_handle, m_funcAddr, mFunc, m_funcSize, NULL);
@@ -118,4 +138,33 @@ void base::InjectCall(LPVOID mFunc, LPVOID Param, DWORD ParamSize, DWORD ParamNu
 	WaitForSingleObject(m_hRemoteThread, INFINITE); //等待线程结束 
 	//4.关闭线程
 	CloseHandle(m_hRemoteThread);
+}
+
+
+
+// -------------------窗口操作相关---------------------------
+
+// 获取子窗口的句柄 递归查找
+// hwndChild 子窗口句柄
+// lParam 参数
+BOOL CALLBACK EnumChildProc(HWND hwndChild, LPARAM lParam)
+{
+	WCHAR windowName[128];//定义一个宽字符接收名字
+	memset(windowName, 0, sizeof(windowName));// 设置内存地址为0
+	::GetWindowText(hwndChild, windowName, 128);
+	std::cout << windowName << std::endl;
+	if (wcscmp(windowName, L""))
+	{
+		
+	}
+
+	return TRUE;
+}
+
+HWND base::findSubWindow(HWND parentHwnd)
+{
+	//1.枚举当前父级下所有的子窗口
+    ::EnumChildWindows(parentHwnd, EnumChildProc, 0);
+	HWND hwnd = NULL;
+	return hwnd;
 }

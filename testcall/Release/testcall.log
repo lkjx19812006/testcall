@@ -1,8 +1,7 @@
-﻿  testcall.cpp
-  testcallDlg.cpp
+﻿  base.cpp
   正在生成代码
-  3 of 192 functions ( 1.6%) were compiled, the rest were copied from previous compilation.
+  2 of 199 functions ( 1.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    1 functions had inline decision re-evaluated but remain unchanged
   已完成代码的生成
   testcall.vcxproj -> C:\Users\Administrator\source\repos\testcall\Release\testcall.exe
