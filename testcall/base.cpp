@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "base.h"
 
-
+base * staticBase = NULL;//全局base指针在初始化的时候写入this
 
 base::base()
 {
@@ -10,6 +10,7 @@ base::base()
 
 base::base(DWORD pid)
 {
+	staticBase = this;
 	m_pid = pid;
 	if (!m_pid) {
 		AfxMessageBox(L"base初始化失败 请传入进程ID");
@@ -147,24 +148,65 @@ void base::InjectCall(LPVOID mFunc, LPVOID Param, DWORD ParamSize)
 // 获取子窗口的句柄 递归查找
 // hwndChild 子窗口句柄
 // lParam 参数
-BOOL CALLBACK EnumChildProc(HWND hwndChild, LPARAM lParam)
+
+
+
+
+BOOL CALLBACK base::EnumChildProc(HWND hwndChild, LPARAM lparam)
 {
-	WCHAR windowName[128];//定义一个宽字符接收名字
-	memset(windowName, 0, sizeof(windowName));// 设置内存地址为0
-	::GetWindowText(hwndChild, windowName, 128);
-	std::cout << windowName << std::endl;
-	if (wcscmp(windowName, L""))
-	{
-		
-	}
+	struct wndObject wd;
+	wd.hwnd = hwndChild;
+
+	::GetWindowText(hwndChild, wd.title, sizeof(wd.title));
+	::GetClassName(hwndChild, wd.className, sizeof(wd.className));
+	
+	staticBase->wndList.push_back(wd);
+	//OutputDebugString(L"\n");
+	//OutputDebugString(L"窗口标题=");
+	//OutputDebugString(windowName);
+	//OutputDebugString(L"\n");
+	//OutputDebugString(L"窗口类名=");
+	//OutputDebugString(windowClassName);
+	::EnumChildWindows(hwndChild, staticBase->EnumChildProc, 0);
 
 	return TRUE;
 }
 
-HWND base::findSubWindow(HWND parentHwnd)
+HWND base::findSubWindow(HWND parentHwnd, LPCTSTR lpClassName, LPCTSTR lpWindowName)
 {
+	// 清除容器
+	staticBase->wndList.clear();
 	//1.枚举当前父级下所有的子窗口
-    ::EnumChildWindows(parentHwnd, EnumChildProc, 0);
+    ::EnumChildWindows(parentHwnd, staticBase->EnumChildProc, 0);
 	HWND hwnd = NULL;
+	//2.遍历当前存下来的所有窗口信息
+	std::vector<wndObject>::iterator it;//声明一个迭代器，来访问vector容器，作用：遍历或者指向vector容器的元素 
+	for (it = staticBase->wndList.begin(); it != staticBase->wndList.end(); it++)
+	{
+		if (wcscmp(lpClassName, it->className) == 0 && wcscmp(lpWindowName, it->title) == 0)
+		{
+			/*
+			OutputDebugString(L"\n");
+			OutputDebugString(L"窗口标题=");
+			OutputDebugString(it->className);
+			OutputDebugString(L"-----");
+			OutputDebugString(lpClassName);
+			OutputDebugString(L"\n");
+			OutputDebugString(L"窗口类名=");			
+			OutputDebugString(it->title);
+			OutputDebugString(L"-----");
+			OutputDebugString(lpWindowName);
+			OutputDebugString(L"\n");
+			OutputDebugString(L"窗口句柄=");
+			std::cout << it->hwnd << std::endl;
+			*/
+			hwnd = it->hwnd;
+			break;
+		}		 
+	}
+	staticBase->wndList.clear();
+	std::vector<wndObject>wndList;
+	//创建一个新的向量 复制到和当前的进行交换 实现内存消除 否则 内存会无限变大
+	staticBase->wndList.swap(wndList);
 	return hwnd;
 }
